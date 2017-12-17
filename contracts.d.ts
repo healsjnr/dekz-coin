@@ -37,107 +37,6 @@ export interface BasicTokenInstance extends ContractInstance {
   ): Promise<boolean>;
 }
 
-export interface BookingInstance extends ContractInstance {
-  drawDown(bookingId: UInt, options?: TransactionOptions): Promise<boolean>;
-  getBalance(
-    unnamed0: UInt,
-    options?: TransactionOptions
-  ): Promise<
-    [
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      Address,
-      Address,
-      BigNumber.BigNumber
-    ]
-  >;
-  bookings(
-    unnamed1: UInt,
-    unnamed2: Address,
-    commissionValue: UInt,
-    customer: Address,
-    supplier: Address,
-    finalisedAtEpochSeconds: UInt,
-    options?: TransactionOptions
-  ): Promise<
-    [
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      Address,
-      Address,
-      BigNumber.BigNumber
-    ]
-  >;
-  balances(
-    unnamed3: UInt,
-    unnamed4: Address,
-    commissionValue: UInt,
-    customer: Address,
-    supplier: Address,
-    finalisedAtEpochSeconds: UInt,
-    options?: TransactionOptions
-  ): Promise<BigNumber.BigNumber>;
-  createBooking(
-    bookingId: UInt,
-    bookingValue: UInt,
-    commissionValue: UInt,
-    customer: Address,
-    supplier: Address,
-    finalisedAtEpochSeconds: UInt,
-    options?: TransactionOptions
-  ): Promise<
-    [
-      boolean,
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      Address,
-      Address,
-      BigNumber.BigNumber
-    ]
-  >;
-  bookingProvider(
-    bookingId: UInt,
-    options?: TransactionOptions
-  ): Promise<
-    [
-      Address,
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      Address,
-      Address,
-      BigNumber.BigNumber
-    ]
-  >;
-  getBookingDetails(
-    bookingId: UInt,
-    options?: TransactionOptions
-  ): Promise<
-    [
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      BigNumber.BigNumber,
-      Address,
-      Address,
-      BigNumber.BigNumber
-    ]
-  >;
-  balanceOf(
-    bookingId: UInt,
-    options?: TransactionOptions
-  ): Promise<BigNumber.BigNumber>;
-  payForBooking(
-    bookingId: UInt,
-    options?: TransactionOptions
-  ): Promise<boolean>;
-}
-
 export interface CrowdsaleInstance extends ContractInstance {
   rate(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
   endTime(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
@@ -207,10 +106,29 @@ export interface DekzCoinCrowdsaleInstance extends ContractInstance {
   rate(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
   endTime(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
   weiRaised(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
+  changeDekzAddress(
+    newAddress: Address,
+    options?: TransactionOptions
+  ): Promise<boolean>;
   wallet(options?: TransactionOptions): Promise<Address>;
+  takeAllTheMoney(
+    beneficiary: Address,
+    options?: TransactionOptions
+  ): Promise<boolean>;
   startTime(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
-  buyTokens(beneficiary: Address, options?: TransactionOptions): Promise<void>;
+  owner(beneficiary: Address, options?: TransactionOptions): Promise<Address>;
+  buyTokens(
+    beneficiary: Address,
+    options?: TransactionOptions
+  ): Promise<boolean>;
   hasEnded(options?: TransactionOptions): Promise<boolean>;
+  transferOwnership(
+    newOwner: Address,
+    endTime: UInt,
+    rate: UInt,
+    dekzWallet: Address,
+    options?: TransactionOptions
+  ): Promise<void>;
   token(options?: TransactionOptions): Promise<Address>;
 }
 
