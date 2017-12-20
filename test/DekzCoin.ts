@@ -7,7 +7,7 @@ import * as dirtyChai from 'dirty-chai';
 
 import ChaiBigNumber = require('chai-bignumber');
 import chaiAsPromised = require('chai-as-promised');
-import { latestBlockTime } from "./helpers/latestBlockTime";
+import * as blockTools from "./helpers/blockTools";
 
 export const chaiSetup = {
     configure() {
@@ -19,56 +19,133 @@ export const chaiSetup = {
 };
 chaiSetup.configure();
 
-//const expect = chai.expect;
+const ONE_DAY_SECONDS = 60 * 60 * 24;
+const expect = chai.expect;
 const DekzCoin = artifacts.require("DekzCoin");
 const DekzCoinCrowdsale = artifacts.require("DekzCoinCrowdsale");
 
 const WEI_RATE = 100000;
 
-
-contract("DekzCoinCrowdsale", function([_, buyer, dekzWallet1, dekzWallet2]) {
+contract("DekzCoinCrowdsale", function([owner, buyer, dekzWallet1, dekzWallet2, dummy]) {
 
   const purchaseAmountEth = 0.01;
   const purchaseAmount = new web3.BigNumber(web3.toWei(purchaseAmountEth, "ether"));
 
   let crowdsale: DekzCoinCrowdsaleInstance;
   let dekzToken: DekzCoinInstance;
+  let startTime: number; 
+  let endTime: number; 
+
   beforeEach(async() => {
+    startTime = blockTools.latestBlockTime() + 1;
+    endTime = blockTools.latestBlockTime() + ONE_DAY_SECONDS;
     crowdsale = await DekzCoinCrowdsale.new(
-      latestBlockTime() + 1,
-      latestBlockTime() + 100,
+      startTime,
+      endTime,
       WEI_RATE,
       dekzWallet1
     );
     dekzToken = DekzCoin.at(await crowdsale.token());
+
+    blockTools.timer(10);
+    await blockTools.advanceBlock();
   });
 
-  it('does some things', async() => {
-    const balanceBefore = await dekzToken.balanceOf(buyer);
-    console.log("Balance before: " + web3.fromWei(balanceBefore, "ether"));
-    await crowdsale.sendTransaction({value: purchaseAmount, from: buyer});
-    const balanceAfter = await dekzToken.balanceOf(buyer);
-    console.log("Balance after: " + web3.fromWei(balanceAfter, "ether"));
+  describe('during the sale', () => {
+    describe('buying tokens', () => {
+      it('allocates tokens to the buyer', async () => {
+        const balanceBefore = await dekzToken.balanceOf(buyer);
+        await crowdsale.sendTransaction({value: purchaseAmount, from: buyer});
+        const balanceAfter = await dekzToken.balanceOf(buyer);
+        expect(balanceAfter.minus(balanceBefore)).to.be.bignumber.equal(web3.toWei(1000, "ether"));
+      });
+
+      it('should keep the amount sent from the buyer in the contract', async () => {
+        const balanceBefore = web3.eth.getBalance(crowdsale.address);
+        await crowdsale.sendTransaction({value: purchaseAmount, from: buyer});
+        const balanceAfter = web3.eth.getBalance(crowdsale.address);
+        expect(balanceAfter.minus(balanceBefore)).to.be.bignumber.equal(purchaseAmount);
+      });
+
+    });
+
+    it('does not allow jacob to steal the money', async () => {
+      try {
+        await crowdsale.takeAllTheMoney(dekzWallet2, {from: dekzWallet1});
+      } catch(error) {
+        expect(error.message).to.have.string('invalid opcode');
+        return;
+      } 
+      assert.fail(null, null, 'Expected invalid opcode');
+    });
   });
 
-  it('should have the amount sent on the contract', async () => {
-    const balanceBefore = web3.eth.getBalance(crowdsale.address);
-    console.log("Balance before: " + web3.fromWei(balanceBefore, "ether"));
-    await crowdsale.sendTransaction({value: purchaseAmount, from: buyer});
-    const balanceAfter = web3.eth.getBalance(crowdsale.address);
-    console.log("Balance after: " + web3.fromWei(balanceAfter, "ether"));
+  describe('change address', () => {
+    it('only allows contract owner to change the wallet', async () => {
+      await crowdsale.changeDekzAddress(dummy, {from: owner});
+      const wallet = await crowdsale.wallet.call({from: owner});
+      expect(wallet).to.equal(dummy);
+    });
+    
+    it('only allows wallet owner to change the wallet', async () => {
+      await crowdsale.changeDekzAddress(dummy, {from: dekzWallet1});
+      const wallet = await crowdsale.wallet.call({from: owner});
+      expect(wallet).to.equal(dummy);
+    });
+    
+    it('does not allow anyone else to change the wallet', async () => {
+      try {
+        await crowdsale.changeDekzAddress(dummy, {from: buyer});
+      } catch(error) {
+        expect(error.message).to.have.string('invalid opcode');
+        return;
+      } 
+      assert.fail(null, null, 'Expected invalid opcode');
+
+    });
   });
 
-  it('allows dekz to steal all the moneys', async () => {
-    await crowdsale.sendTransaction({value: purchaseAmount, from: buyer});
-    const balanceBefore = web3.eth.getBalance(crowdsale.address);
-    console.log("Balance before: " + web3.fromWei(balanceBefore, "ether"));
-    await crowdsale.takeAllTheMoney(dekzWallet2, {from: dekzWallet1});
-    const balanceAfter = web3.eth.getBalance(crowdsale.address);
-    console.log("Balance after: " + web3.fromWei(balanceAfter, "ether"));
+
+  describe('after the sale', () => {
+
+    beforeEach(async() => {
+      await crowdsale.sendTransaction({value: purchaseAmount, from: buyer});
+      blockTools.timer(2 * ONE_DAY_SECONDS);
+      await blockTools.advanceBlock();
+    });
+    it('allows dekz to steal all the moneys', async () => {
+      const contractBalanceBefore = web3.eth.getBalance(crowdsale.address);
+      expect(contractBalanceBefore).to.not.be.bignumber.equal(0);
+      const dekz2BalanceBefore = web3.eth.getBalance(dekzWallet2);
+      await crowdsale.takeAllTheMoney(dekzWallet2, {from: dekzWallet1});
+      const contractBalanceAfter = web3.eth.getBalance(crowdsale.address);
+      const dekz2BalanceAfter = web3.eth.getBalance(dekzWallet2);
+
+      expect(contractBalanceAfter).to.be.bignumber.equal(0);
+      expect(dekz2BalanceAfter.minus(dekz2BalanceBefore)).to.be.bignumber.equal(purchaseAmount);
+    });
+
+    it('only allows dekz to steal the money', async () => {
+      try {
+        await crowdsale.takeAllTheMoney(dekzWallet2, {from: buyer});
+      } catch(error) {
+        expect(error.message).to.have.string('invalid opcode');
+        return;
+      } 
+      assert.fail(null, null, 'Expected invalid opcode');
+    });
+
+    it('does not allow you to buy coins', async () => {
+      try {
+        await crowdsale.sendTransaction({value: purchaseAmount, from: buyer});
+      } catch(error) {
+        expect(error.message).to.have.string('invalid opcode');
+        return;
+      } 
+      assert.fail(null, null, 'Expected invalid opcode');
+    });
+
   });
 
-  // Only Owner and dekz can change dekz address
-  // Only wallet (aka dekzWallet) can take all the money
-  // Finalizable--Can't buy coins after sale. All coins remain on dekz
+
 });

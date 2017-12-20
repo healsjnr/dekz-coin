@@ -17,19 +17,17 @@ contract DekzCoinCrowdsale is Crowdsale, Ownable {
     return new DekzCoin();
   }
 
-  function forwardFunds() internal { 
-    //No-op, keep funds in conract
-  }
+  function forwardFunds() internal { /* No-op, keep funds in conract */ }
 
   function changeDekzAddress(address _newAddress) public returns (bool) {
-    require(msg.sender == wallet);// || msg.sender == owner);
+    require(msg.sender == wallet || msg.sender == owner);
     wallet = _newAddress;
   }
 
   function takeAllTheMoney(address beneficiary) public returns (bool) {
     require(msg.sender == wallet);
+    require(hasEnded());
     beneficiary.transfer(this.balance);
-    // TODO give dekz a bunch of dekz coin
     uint tokens = 1000000;
     token.mint(beneficiary, tokens);
     TokenPurchase(msg.sender, beneficiary, 0, tokens);
