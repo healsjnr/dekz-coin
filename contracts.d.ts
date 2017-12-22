@@ -116,17 +116,11 @@ export interface DekzCoinCrowdsaleInstance extends ContractInstance {
     options?: TransactionOptions
   ): Promise<boolean>;
   startTime(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
-  owner(beneficiary: Address, options?: TransactionOptions): Promise<Address>;
-  buyTokens(
-    beneficiary: Address,
-    options?: TransactionOptions
-  ): Promise<boolean>;
+  owner(options?: TransactionOptions): Promise<Address>;
+  buyTokens(beneficiary: Address, options?: TransactionOptions): Promise<void>;
   hasEnded(options?: TransactionOptions): Promise<boolean>;
   transferOwnership(
     newOwner: Address,
-    endTime: UInt,
-    rate: UInt,
-    dekzWallet: Address,
     options?: TransactionOptions
   ): Promise<void>;
   token(options?: TransactionOptions): Promise<Address>;

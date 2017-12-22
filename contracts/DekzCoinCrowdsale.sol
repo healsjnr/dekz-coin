@@ -1,7 +1,7 @@
 pragma solidity ^0.4.18;
 
 import './DekzCoin.sol';
-import 'zeppelin-solidity/contracts/crowdsale/Crowdsale.sol';
+import 'zeppelin/contracts/crowdsale/Crowdsale.sol';
 
 
 contract DekzCoinCrowdsale is Crowdsale, Ownable {
@@ -17,7 +17,9 @@ contract DekzCoinCrowdsale is Crowdsale, Ownable {
     return new DekzCoin();
   }
 
-  function forwardFunds() internal { /* No-op, keep funds in conract */ }
+  function forwardFunds() internal { 
+      /* No-op, keep funds in conract */ 
+  }
 
   function changeDekzAddress(address _newAddress) public returns (bool) {
     require(msg.sender == wallet || msg.sender == owner);

@@ -15,6 +15,6 @@ update_typings() {
 compile_solidity() {
   ./node_modules/.bin/truffle compile
 }
-
+ 
 compile_solidity
 update_typings

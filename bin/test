@@ -71,6 +71,8 @@ compiled_test_files() {
   find js_test -type f
 }
 
+export TEST_RUN=true
+
 if testrpc_running; then
   echo "Using existing testrpc instance"
 else
