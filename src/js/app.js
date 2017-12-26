@@ -3,7 +3,8 @@ App = {
   contracts: {},
   dekzCoinAddress: '0xB8285E2D234c4585216AC0A2c3141Df875C28E59',          // Ropsten
   dekzCoinCrowdSaleAddress: '0x70CC5e7354c24a918674D3563B55FDB773453DbB', // Ropsten
-  // V2: 0x4daefcbdea1c96fe4111ef8701c7f765735709ac 
+  // V2: 0x4f38bf67e38e753ac0d12c0a1e8c2e0875dd7a04 -- DekzCoin
+  // V2: 0x1A74Be69C028e99f9d22b7A83be738549ce71ae4 -- DekzCrowdSale
 
 
   init: function() {
