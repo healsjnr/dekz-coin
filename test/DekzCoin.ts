@@ -105,6 +105,24 @@ contract("DekzCoinCrowdsale", function([owner, buyer, dekzWallet1, dekzWallet2, 
     });
   });
 
+  describe('leaving messages', () => {
+    
+    const message = 'This is a message';
+    
+    beforeEach(async() => {
+      await crowdsale.leaveMessage(message);
+    });
+
+    it('allows someone to leave a message', async () => {
+      const messageResult = await crowdsale.getMessage.call(0, {from: owner});
+      expect(messageResult).to.equal(message);
+    })
+    it('returns the number of messages', async () => {
+      const messageCount = await crowdsale.getMessageCount.call({from: owner});
+      expect(messageCount).to.be.bignumber.equal(1);
+    });
+
+  });
 
   describe('after the sale', () => {
 

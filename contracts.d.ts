@@ -104,8 +104,10 @@ export interface DekzCoinInstance extends ContractInstance {
 
 export interface DekzCoinCrowdsaleInstance extends ContractInstance {
   rate(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
+  getMessageCount(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
   endTime(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
   weiRaised(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
+  leaveMessage(message: string, options?: TransactionOptions): Promise<boolean>;
   changeDekzAddress(
     newAddress: Address,
     options?: TransactionOptions
@@ -116,6 +118,7 @@ export interface DekzCoinCrowdsaleInstance extends ContractInstance {
     options?: TransactionOptions
   ): Promise<boolean>;
   startTime(options?: TransactionOptions): Promise<BigNumber.BigNumber>;
+  getMessage(index: UInt, options?: TransactionOptions): Promise<string>;
   owner(options?: TransactionOptions): Promise<Address>;
   buyTokens(beneficiary: Address, options?: TransactionOptions): Promise<void>;
   hasEnded(options?: TransactionOptions): Promise<boolean>;

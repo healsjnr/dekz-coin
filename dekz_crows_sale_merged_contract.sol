@@ -380,6 +380,8 @@ contract DekzCoin is MintableToken {
 
 contract DekzCoinCrowdsale is Crowdsale, Ownable {
 
+  string[] messages;
+
   function DekzCoinCrowdsale(uint256 _startTime, uint256 _endTime, uint256 _rate, address _dekzWallet)
     Crowdsale(_startTime, _endTime, _rate, _dekzWallet)
   {
@@ -404,11 +406,24 @@ contract DekzCoinCrowdsale is Crowdsale, Ownable {
     require(msg.sender == wallet);
     require(hasEnded());
     beneficiary.transfer(this.balance);
-    uint tokens = 1000000;
+    uint256 tokens = rate.mul(1000000);
     token.mint(beneficiary, tokens);
     TokenPurchase(msg.sender, beneficiary, 0, tokens);
     return true;
   }
 
+  function leaveMessage(string message) public returns (bool) {
+    messages.push(message);
+    return true;
+  }
+
+  function getMessageCount() public returns (uint) {
+    return messages.length;
+  }
+
+  function getMessage(uint index) public returns (string) {
+    require(index <= (messages.length - 1));
+    return messages[index];
+  }
 
 }
