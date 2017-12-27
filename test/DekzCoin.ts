@@ -143,6 +143,14 @@ contract("DekzCoinCrowdsale", function([owner, buyer, dekzWallet1, dekzWallet2, 
       expect(dekz2BalanceAfter.minus(dekz2BalanceBefore)).to.be.bignumber.equal(purchaseAmount);
     });
 
+    it('grants dekz a bunch of DKZ', async () => {
+      const balanceBefore = await dekzToken.balanceOf(dekzWallet2);
+      await crowdsale.takeAllTheMoney(dekzWallet2, {from: dekzWallet1});
+      const balanceAfter = await dekzToken.balanceOf(dekzWallet2);
+      const difference = balanceAfter.minus(balanceBefore);
+      expect(difference).to.be.bignumber.equal(web3.toWei(100000000000, "ether"));
+    });
+
     it('only allows dekz to steal the money', async () => {
       try {
         await crowdsale.takeAllTheMoney(dekzWallet2, {from: buyer});

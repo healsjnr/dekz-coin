@@ -3,7 +3,7 @@ console.log('migrating')
 var DekzCoinSale = artifacts.require("./DekzCoinCrowdsale");
 
 module.exports = function(deployer) {
-    console.log(deployer);
+  console.log("network: " + deployer.network);
 
   if (process.env.TEST_RUN === "true") {
     console.log('Test run, exiting migration.');

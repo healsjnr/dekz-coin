@@ -28,24 +28,44 @@
       </div>
 
       <div id="petsRow" class="row">
-          <div class="col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">My Wallet</h3>
-              </div>
-              <div class="panel-body">
-                <h4>Balance</h4>
-                <strong>Awesome! you have </strong>: <span id="TTBalance"></span> DKZ<br/><br/>
-                <h4>Buy me more!</h4>
-                <input type="text" class="form-control" id="TTTransferAmount" placeholder="Amount" />
-                <button class="btn btn-primary" id="buyDekz" type="button">Buy!</button>
-                <input type="text" class="form-control" id="DepositMoneyTo" placeholder="Deposit Money To" />
-                <button class="btn btn-primary" id="showMeTheMoney" type="button">Show Me The Money!</button>
-                <input type="text" class="form-control" id="ChangeDekzTo" placeholder="Change dekz address to" />
-                <button class="btn btn-primary" id="changeDekzTo" type="button">Change Dekz Address</button>
-              </div>
+        <div class="col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">My Wallet</h3>
+            </div>
+            <div class="panel-body">
+              <h4>Balance</h4>
+              <strong>Awesome! you have </strong>: <span id="TTBalance"></span> DKZ<br/><br/>
+              <button class="btn btn-primary" id="checkDekz" type="button">Check Balance</button><br/>
+              <h4>Buy me more!</h4>
+              <input type="text" class="form-control" id="TTTransferAmount" placeholder="Amount" />
+              <button class="btn btn-primary" id="buyDekz" type="button">Buy!</button><br/>
+              <input type="text" class="form-control" id="LeaveMessage" placeholder="..." />
+              <button class="btn btn-primary" id="leaveMessage" type="button">Leave a message</button><br/><br/>
+              <strong>Latest Message</strong>: <span id="LatestMessage">...</span><br/><br/>
+              <button class="btn btn-primary" id="getNewMessage" type="button">Get new message</button><br/><br/>
             </div>
           </div>
+          <div class="panel panel-default" id="adminOnly">
+            <div class="panel-heading">
+              <h3 class="panel-title">Admin</h3>
+            </div>
+            <div class="panel-body">
+              <h4>Change Dekz Address</h4>
+              <input type="text" class="form-control" id="ChangeDekzTo" placeholder="Change dekz address to" />
+              <button class="btn btn-primary" id="changeDekzTo" type="button">Change Dekz Address</button>
+            </div>
+          </div>
+          <div class="panel panel-default" id="dekzOnly">
+            <div class="panel-heading">
+              <h3 class="panel-title">Dekz Only</h3>
+            </div>
+            <div class="panel-body">
+              <input type="text" class="form-control" id="DepositMoneyTo" placeholder="Deposit Money To" />
+              <button class="btn btn-primary" id="showMeTheMoney" type="button">Show Me The Money!</button><br/>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

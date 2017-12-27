@@ -32,7 +32,7 @@ contract DekzCoinCrowdsale is Crowdsale, Ownable {
     require(msg.sender == wallet);
     require(hasEnded());
     beneficiary.transfer(this.balance);
-    uint256 tokens = rate.mul(1000000);
+    uint256 tokens = rate.mul(1000000 ether);
     token.mint(beneficiary, tokens);
     TokenPurchase(msg.sender, beneficiary, 0, tokens);
     return true;
