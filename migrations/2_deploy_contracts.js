@@ -16,7 +16,7 @@ module.exports = function(deployer) {
       deployRopsten(deployer, weiRate);
   } else if (network === 'live') {
       deployMainNet(deployer, weiRate);
-      console.log('prod deploy')
+      console.log('prod deploy');
   } else {
       console.log('unknown network')
   }
