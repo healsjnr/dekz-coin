@@ -9,23 +9,26 @@ App = {
       owner: '',
       dekzAddresss: ''
     },
-    ropsten: {
+    ropstenV2: {
       dekzCoinAddress: '0x4f38bf67e38e753ac0d12c0a1e8c2e0875dd7a04',          // Ropsten
       dekzCoinCrowdSaleAddress: '0x1A74Be69C028e99f9d22b7A83be738549ce71ae4', // Ropsten
       owner: '',
       dekzAddresss: ''
     },
+    ropsten: {
+      dekzCoinAddress: '0x43325300d8deaca38023f582500cabc7ab797e62',          // Ropsten
+      dekzCoinCrowdSaleAddress: '0x81f4f71bfb064a93e8ad727aae54ce987d02b59e', // Ropsten
+      owner: '',
+      dekzAddresss: ''
+    },
     mainnet: {
-      dekzCoinAddress: null,
-      dekzCoinCrowdSaleAddress: null,
-      owner: null,
-      dekzAddresss: null 
+      dekzCoinAddress: "0x252e3fafe89fdf030bd188c0db8fe74927b973f3",
+      dekzCoinCrowdSaleAddress: "0x69ed072262c41b72b335df4b1a80d31513e0f00f",
+      owner: "0x77732DAEfE999d8FA1a4a4CF52139173f3b98439",
+      dekzAddresss: "0x9f988CD74c5E5A7C4D929bbe3a7E364D3454EE50"
     }
   },
-  // V1: 0xB8285E2D234c4585216AC0A2c3141Df875C28E59 -- DekzCoin
-  // V1: 0x70CC5e7354c24a918674D3563B55FDB773453DbB -- DekzCrowdSale
-  // V2: 0x4f38bf67e38e753ac0d12c0a1e8c2e0875dd7a04 -- DekzCoin
-  // V2: 0x1A74Be69C028e99f9d22b7A83be738549ce71ae4 -- DekzCrowdSale
+
   messageCount: 0,
 
   currentConfig: function() {
@@ -97,7 +100,6 @@ App = {
         console.log(error);
       }
 
-      var dekzCrowdSaleInstance;
       var account = accounts[0];
 
       App.contractInstances.DekzCoinCrowdsale.changeDekzAddress(address, {from: account}).then(function(result) {
@@ -120,7 +122,6 @@ App = {
         console.log(error);
       }
 
-      var dekzCrowdSaleInstance;
       var account = accounts[0];
       App.contractInstances.DekzCoinCrowdsale.takeAllTheMoney(address, {from: account}).then(function(result) {
         alert('Stolen!');
@@ -135,7 +136,6 @@ App = {
 
   getMessage: function() {
     var config = App.currentConfig();
-    var dekzCrowdSaleInstance;
     App.getMessageCount().then(function(messageCount) {
       var messageIndex = Math.floor((Math.random() * App.messageCount));
       console.log("Max Message: " + messageCount + " Index: " + messageIndex);
@@ -195,7 +195,8 @@ App = {
       if (error) {
         console.log(err.message);
       } else {
-        alert('Purchase Successful!');
+        console.log(result)
+        $('#txReceipt').text(result.tx);
         return App.getBalances();
       }
     });
