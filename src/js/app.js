@@ -7,19 +7,19 @@ App = {
       dekzCoinAddress: '0xB8285E2D234c4585216AC0A2c3141Df875C28E59',          // Ropsten
       dekzCoinCrowdSaleAddress: '0x70CC5e7354c24a918674D3563B55FDB773453DbB', // Ropsten
       owner: '',
-      dekzAddresss: ''
+      dekzAddresss: '0x99E1fc7Fe05c00B09D541F37D15B9fd88dd0F013'
     },
     ropstenV2: {
       dekzCoinAddress: '0x4f38bf67e38e753ac0d12c0a1e8c2e0875dd7a04',          // Ropsten
       dekzCoinCrowdSaleAddress: '0x1A74Be69C028e99f9d22b7A83be738549ce71ae4', // Ropsten
       owner: '',
-      dekzAddresss: ''
+      dekzAddresss: '0x99E1fc7Fe05c00B09D541F37D15B9fd88dd0F013'
     },
     ropsten: {
       dekzCoinAddress: '0x43325300d8deaca38023f582500cabc7ab797e62',          // Ropsten
       dekzCoinCrowdSaleAddress: '0x81f4f71bfb064a93e8ad727aae54ce987d02b59e', // Ropsten
       owner: '',
-      dekzAddresss: ''
+      dekzAddresss: '0x99E1fc7Fe05c00B09D541F37D15B9fd88dd0F013'
     },
     mainnet: {
       dekzCoinAddress: "0x252e3fafe89fdf030bd188c0db8fe74927b973f3",
@@ -36,6 +36,7 @@ App = {
   },
 
   init: function() {
+    $("#dekzOnly").hide();
     return App.initWeb3();
   },
 
@@ -78,6 +79,19 @@ App = {
       });
     });
 
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+      var account = accounts[0];
+      console.log("account:      " + account);
+      console.log("dekz account: " + config.dekzAddresss);
+      if (account.toUpperCase() == config.dekzAddresss.toUpperCase()) {
+        console.log('unlock for dekz');
+        $("#dekzOnly").show();
+      }
+    });
+
     return App.bindEvents();
   },
 
@@ -88,6 +102,18 @@ App = {
     $(document).on('click', '#changeDekzTo', App.changeContractAddress);
     $(document).on('click', '#leaveMessage', App.leaveMessage);
     $(document).on('click', '#getNewMessage', App.getMessage);
+  },
+
+  currentAccount: function() {
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+      console.log(accounts);
+
+      var account = accounts[0];
+      return account;
+    });
   },
   
   changeContractAddress: function() {
