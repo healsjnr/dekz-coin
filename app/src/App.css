@@ -1,0 +1,184 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 16s linear;
+  height: 80px;
+}
+
+.App-header {
+  height: 40px;
+  padding: 20px;
+  border-radius: 6px;
+  color: white;
+  position: fixed;
+  top:10px;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, 10px)
+}
+
+.Intro-para {
+  font-size: 1rem;
+}
+
+.App-title {
+  font-size: 3rem;
+  letter-spacing: 17px;
+}
+
+.App-intro {
+  margin: 0 auto;
+  margin-top: -1100px;
+  margin-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  position: relative;
+  z-index: 99999;
+}
+
+.Button {
+  background-color: #FF3E87;
+  padding: 1rem 2rem;
+  width: 200px;
+  text-transform: uppercase;
+  border-radius: .2rem;
+  margin-top: 4rem;
+  cursor: pointer;
+}
+
+.Button:hover {
+  background-color: #f41c6e;
+}
+
+.CountdownTimer {
+  padding: 1rem;
+  border-radius: .4rem;
+  background-color: rgba(255,255,255,.1);
+  margin: 1rem 0;
+}
+
+.CountdownTimer .section {
+  background-color: transparent!important;
+  margin-right: 2rem!important;
+}
+
+.CountdownTimer .label {
+  background-color: transparent!important;
+  color: white!important;
+}
+
+.CountdownTimer .time {
+  font-size: 4rem!important;
+}
+
+.Get-dekz-input {
+  position: relative;
+  margin-bottom: .5rem;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.dekzInput {
+  background-color: white;
+  outline:0;
+  border:0;
+  color: #f41c6e;
+  font-size: 1.4rem;
+  padding: 1rem;
+  width: 100%;
+  border-radius:.4rem;
+}
+
+.Get-dekz-input .Copy {
+  opacity: 0;
+}
+
+.Get-dekz-input:hover .Copy {
+  opacity: 1;
+}
+
+.Copy {
+  position: absolute;
+  top: 19px;
+  right: -20px;
+  padding: .25rem .5rem;
+  text-transform: uppercase;
+  border:0;
+  outline: 0;
+  border-radius: .4rem;
+  background-color: #eee
+}
+
+.Copy:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+.Copied {
+  color: #4caf50;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.smallText {
+  opacity: .8;
+  max-width: 600px;
+  display: inline-block;
+  margin-top: 2rem;
+}
+
+.Footer {
+  margin-top: 500px;
+}
+
+.footer-tagline {
+  opacity: .4;
+}
+
+.OrderedList {
+  text-align: left;
+}
+
+.OrderedList li{
+  margin-bottom: 1.5rem;
+}
+
+.tokens {
+  max-width: 700px;
+  margin: 0 auto;
+  padding-top: 20px;
+  color: white;
+  padding-bottom: 20px;
+  background-color: #0c012d;
+  border-radius: .4rem;
+  margin-bottom: 400px
+}
+
+.link {
+  color: #FF3E87;
+  border-bottom: 1px dotted #FF3E87;
+  margin-top: 2rem;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.link:hover {
+  color: #f41c6e;
+}
+
+@media screen and (max-width: 768px) {
+  .App-intro,
+  .tokens{
+    width: 90%;
+    font-size: 90%;
+  }
+}
