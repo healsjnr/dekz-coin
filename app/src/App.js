@@ -18,7 +18,7 @@ class App extends Component {
     value: '0x69eD072262C41b72b335df4B1A80d31513E0f00F',
     copied: false,
     web3: null,
-    crowdsaleAddress: '0x81f4f71bfb064a93e8ad727aae54ce987d02b59e',
+    crowdsaleAddress: '0x69ed072262c41b72b335df4b1a80d31513e0f00f',
     crowdsaleInstance: null,
     latestMessage: ""
   };
