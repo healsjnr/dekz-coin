@@ -20,12 +20,16 @@ class App extends Component {
     web3: null,
     crowdsaleAddress: '0x69ed072262c41b72b335df4b1a80d31513e0f00f',
     crowdsaleInstance: null,
-    latestMessage: ""
+    latestMessage: "",
+    messageText: ""
   };
 
   componentWillMount() {
     // Get network provider and web3 instance.
     // See utils/getWeb3 for more info.
+
+    this.updateMessageText= this.updateMessageText.bind(this);
+    this.leaveAMessage = this.leaveAMessage.bind(this);
 
     getWeb3
     .then(results => {
@@ -87,6 +91,29 @@ class App extends Component {
       console.log(err.message)
     })
 
+  }
+
+  updateMessageText(event) {
+    this.setState({messageText: event.target.value})
+  }
+  
+  leaveAMessage(event) {
+    event.preventDefault();
+    const messageText = this.state.messageText
+
+    this.state.web3.eth.getAccounts((error, accounts) => {
+      if (error) {
+        console.log(error);
+      }
+      const account = accounts[0]
+      console.log("Message to leave: " + messageText)
+
+      this.state.crowdsaleInstance.leaveMessage(messageText, {from: account}).then(function (result) {
+        console.log(result);
+      }).catch(function(err) {
+        console.log(err.message);
+      })
+    })
   }
 
   render() {
@@ -271,6 +298,13 @@ class App extends Component {
           <Element name="messages" className="element">
               <p>A random message for dekz</p>
               <p><strong>{this.state.latestMessage}</strong></p>
+              <form onSubmit={this.leaveAMessage}>
+                <label>
+                  Leave dekz a messsage:
+                  <input type="text" value={this.state.messageText} onChange={this.updateMessageText} />
+                </label>
+                <input type="submit" value="Submit" />
+              </form>
           </Element>
           <p className="footer-tagline">Designed and developed with ♥ in Melbourne by the Hooroo crew.</p>
         </div>
