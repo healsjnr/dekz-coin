@@ -19,7 +19,8 @@ class App extends Component {
     copied: false,
     web3: null,
     crowdsaleAddress: '0x81f4f71bfb064a93e8ad727aae54ce987d02b59e',
-    crowdsaleInstance: null 
+    crowdsaleInstance: null,
+    latestMessage: ""
   };
 
   componentWillMount() {
@@ -52,9 +53,7 @@ class App extends Component {
     crowdSale.at(this.state.crowdsaleAddress).then(instance => {
       this.setState({crowdsaleInstance: instance})
       console.log(this.state.crowdsaleInstance)
-      return this.getMessageCount()
-    }).then(count => {
-      return this.getMessage(count - 1)
+      return this.getRandomMessage()
     }).catch(err => {
       console.log(err.message)
     })
@@ -69,7 +68,18 @@ class App extends Component {
     })
   }
 
+  getRandomMessage() {
+    return this.getMessageCount().then(count => {
+      console.log("count: " + count)
+      const messageIndex = Math.floor((Math.random() * count));
+      return this.getMessage(messageIndex)
+    }).then(latestMessage => {
+      this.setState({latestMessage: latestMessage})
+    })
+  }
+
   getMessage(index) {
+    console.log(index)
     return this.state.crowdsaleInstance.getMessage.call(index).then(result => {
       console.log("getMessage Result: " + result);
       return result;
@@ -257,6 +267,10 @@ class App extends Component {
               <li>Click *Add*!</li>
               </ol>
             </div>
+          </Element>
+          <Element name="messages" className="element">
+              <p>A random message for dekz</p>
+              <p><strong>{this.state.latestMessage}</strong></p>
           </Element>
           <p className="footer-tagline">Designed and developed with ♥ in Melbourne by the Hooroo crew.</p>
         </div>
