@@ -6,6 +6,10 @@ import CountdownTimer from 'react-awesome-countdowntimer';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import * as Scroll from 'react-scroll';
 import { Link, DirectLink, Element , Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
+
+import DekzCoinCrowdsale from './contracts/DekzCoinCrowdsale.json'
+
+import getWeb3 from './utils/getWeb3'
 import './App.css';
 
 class App extends Component {
@@ -13,7 +17,67 @@ class App extends Component {
   state = {
     value: '0x69eD072262C41b72b335df4B1A80d31513E0f00F',
     copied: false,
+    web3: null,
+    crowdsaleAddress: '0x81f4f71bfb064a93e8ad727aae54ce987d02b59e',
+    crowdsaleInstance: null 
   };
+
+  componentWillMount() {
+    // Get network provider and web3 instance.
+    // See utils/getWeb3 for more info.
+
+    getWeb3
+    .then(results => {
+      this.setState({
+        web3: results.web3
+      })
+
+      // Instantiate contract once web3 provided.
+      this.instantiateContract()
+    })
+    .catch((error) => {
+      console.log('Error finding web3.')
+      console.log(error)
+    })
+  }
+
+
+  instantiateContract() {
+    const contract = require('truffle-contract')
+    const crowdSale = contract(DekzCoinCrowdsale)
+    crowdSale.setProvider(this.state.web3.currentProvider)
+
+    // Declaring this for later so we can chain functions on SimpleStorage.
+
+    crowdSale.at(this.state.crowdsaleAddress).then(instance => {
+      this.setState({crowdsaleInstance: instance})
+      console.log(this.state.crowdsaleInstance)
+      return this.getMessageCount()
+    }).then(count => {
+      return this.getMessage(count - 1)
+    }).catch(err => {
+      console.log(err.message)
+    })
+  }
+
+  getMessageCount() {
+    return this.state.crowdsaleInstance.getMessageCount.call().then(result => {
+      console.log("getMessageCount Result: " + result);
+      return result;
+    }).catch(err => {
+      console.log(err.message)
+    })
+  }
+
+  getMessage(index) {
+    return this.state.crowdsaleInstance.getMessage.call(index).then(result => {
+      console.log("getMessage Result: " + result);
+      return result;
+    }).catch(err => {
+      console.log(err.message)
+    })
+
+  }
 
   render() {
     return (

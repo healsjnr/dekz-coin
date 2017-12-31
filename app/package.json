@@ -10,7 +10,8 @@
     "react-dom": "^16.2.0",
     "react-particles-js": "^2.1.0",
     "react-scripts": "1.0.17",
-    "react-scroll": "^1.7.4"
+    "react-scroll": "^1.7.4",
+    "truffle-contract": "^3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
