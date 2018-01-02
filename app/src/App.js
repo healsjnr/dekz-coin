@@ -255,7 +255,7 @@ class App extends Component {
           <h1 className="App-title">DEKZ COIN</h1>
 
           <div className='CountdownTimer'>
-            Ends Friday, January 5, 2018 4:00:00 AM GMT+11:00
+            <span className='endz'>Ends Friday, January 5, 2018 4:00:00 AM GMT+11:00</span>
             <CountdownTimer endDate={moment('05/01/2018 04:00:00', 'DD/MM/YYYY hh:mm:ss')}/>
           </div>
           <h2>DEKZCOIN is an ETH based token heralding <br/> Insignificance for the Blockchain Era.</h2>
@@ -288,7 +288,7 @@ class App extends Component {
             <Link className='link' activeClass="active" to="tokens" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
               How do i see my DKZ tokens?
             </Link>
-            &nbsp;&nbsp; | &nbsp;&nbsp;
+            <span className='pipe'>&nbsp;&nbsp; | &nbsp;&nbsp;</span>
             <Link className='link' activeClass="active" to="messages" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
               Leave Jacob a message.
             </Link>

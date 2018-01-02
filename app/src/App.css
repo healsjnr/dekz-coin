@@ -196,9 +196,52 @@
 }
 
 @media screen and (max-width: 768px) {
+
+  .pipe {
+    display: none;
+  }
+
   .App-intro,
-  .tokens{
+  .tokens {
     width: 90%;
     font-size: 90%;
+    word-break: break-word;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .Footer {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .CountdownTimer {
+    margin: 0 auto;
+    width: 270px;
+  }
+
+  .CountdownTimer .time {
+    font-size: 1.4rem!important;
+  }
+
+  .CountdownTimer .label {
+    font-size: .7rem!important;
+  }
+
+  .endz {
+    font-size: .7rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+
+  .CountdownTimer .section {
+    min-width: 40px!important;
+    min-height: 50px!important;
+    margin-right: 22px!important;
+  }
+
+  .dekzInput {
+    font-size: .8rem;
+    width: 80%;
   }
 }
