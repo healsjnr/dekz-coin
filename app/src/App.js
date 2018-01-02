@@ -96,7 +96,7 @@ class App extends Component {
   updateMessageText(event) {
     this.setState({messageText: event.target.value})
   }
-  
+
   leaveAMessage(event) {
     event.preventDefault();
     const messageText = this.state.messageText
@@ -295,15 +295,13 @@ class App extends Component {
               </ol>
             </div>
           </Element>
-          <Element name="messages" className="element">
-              <p>A random message for dekz</p>
-              <p><strong>{this.state.latestMessage}</strong></p>
+          <Element name="messages" className="element messages">
+              <h2>Leave a message for dekz</h2>
               <form onSubmit={this.leaveAMessage}>
                 <label>
-                  Leave dekz a messsage:
-                  <input type="text" value={this.state.messageText} onChange={this.updateMessageText} />
+                  <input type="text" placeholder="🏩 Noooo. Please don't go" value={this.state.messageText} onChange={this.updateMessageText} className='dekzInput' />
                 </label>
-                <input type="submit" value="Submit" />
+                <button type="submit" value="Submit" className='Button'>Send Message</button>
               </form>
           </Element>
           <p className="footer-tagline">Designed and developed with ♥ in Melbourne by the Hooroo crew.</p>
