@@ -273,6 +273,10 @@ class App extends Component {
             <Link className='link' activeClass="active" to="tokens" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
               How do i see my DKZ tokens?
             </Link>
+            &nbsp;&nbsp; | &nbsp;&nbsp;
+            <Link className='link' activeClass="active" to="messages" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
+              Leave Jacob a message.
+            </Link>
 
           </div>
         </div>
@@ -296,7 +300,7 @@ class App extends Component {
             </div>
           </Element>
           <Element name="messages" className="element messages">
-              <h2>Leave a message for dekz</h2>
+              <h2>Leave a message for Jacob</h2>
               <form onSubmit={this.leaveAMessage}>
                 <label>
                   <input type="text" placeholder="🏩 Noooo. Please don't go" value={this.state.messageText} onChange={this.updateMessageText} className='dekzInput' />
