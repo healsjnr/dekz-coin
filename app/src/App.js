@@ -273,6 +273,10 @@ class App extends Component {
             <Link className='link' activeClass="active" to="tokens" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
               How do i see my DKZ tokens?
             </Link>
+            &nbsp;&nbsp; | &nbsp;&nbsp;
+            <Link className='link' activeClass="active" to="messages" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
+              Leave Jacob a message.
+            </Link>
 
           </div>
         </div>
