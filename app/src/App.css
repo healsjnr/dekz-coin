@@ -43,11 +43,15 @@
 .Button {
   background-color: #FF3E87;
   padding: 1rem 2rem;
-  width: 200px;
   text-transform: uppercase;
   border-radius: .2rem;
-  margin-top: 4rem;
+  margin-top: 1rem;
   cursor: pointer;
+  outline: 0;
+  border: 0;
+  font-weight: 600;
+  color: white;
+  font-size: 1rem
 }
 
 .Button:hover {
@@ -160,8 +164,20 @@
   padding-bottom: 20px;
   background-color: #0c012d;
   border-radius: .4rem;
-  margin-bottom: 400px
+  margin-bottom: 80px
 }
+
+.messages {
+  max-width: 660px;
+  margin: 0 auto;
+  padding-top: 20px;
+  color: white;
+  margin-bottom: 100px
+}
+
+.messages input:focus::-webkit-input-placeholder {
+    color: transparent;
+  }
 
 .link {
   color: #FF3E87;

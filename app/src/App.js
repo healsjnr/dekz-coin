@@ -6,6 +6,10 @@ import CountdownTimer from 'react-awesome-countdowntimer';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import * as Scroll from 'react-scroll';
 import { Link, DirectLink, Element , Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
+
+import DekzCoinCrowdsale from './contracts/DekzCoinCrowdsale.json'
+
+import getWeb3 from './utils/getWeb3'
 import './App.css';
 
 class App extends Component {
@@ -13,7 +17,104 @@ class App extends Component {
   state = {
     value: '0x69eD072262C41b72b335df4B1A80d31513E0f00F',
     copied: false,
+    web3: null,
+    crowdsaleAddress: '0x69ed072262c41b72b335df4b1a80d31513e0f00f',
+    crowdsaleInstance: null,
+    latestMessage: "",
+    messageText: ""
   };
+
+  componentWillMount() {
+    // Get network provider and web3 instance.
+    // See utils/getWeb3 for more info.
+
+    this.updateMessageText= this.updateMessageText.bind(this);
+    this.leaveAMessage = this.leaveAMessage.bind(this);
+
+    getWeb3
+    .then(results => {
+      this.setState({
+        web3: results.web3
+      })
+
+      // Instantiate contract once web3 provided.
+      this.instantiateContract()
+    })
+    .catch((error) => {
+      console.log('Error finding web3.')
+      console.log(error)
+    })
+  }
+
+
+  instantiateContract() {
+    const contract = require('truffle-contract')
+    const crowdSale = contract(DekzCoinCrowdsale)
+    crowdSale.setProvider(this.state.web3.currentProvider)
+
+    // Declaring this for later so we can chain functions on SimpleStorage.
+
+    crowdSale.at(this.state.crowdsaleAddress).then(instance => {
+      this.setState({crowdsaleInstance: instance})
+      console.log(this.state.crowdsaleInstance)
+      return this.getRandomMessage()
+    }).catch(err => {
+      console.log(err.message)
+    })
+  }
+
+  getMessageCount() {
+    return this.state.crowdsaleInstance.getMessageCount.call().then(result => {
+      console.log("getMessageCount Result: " + result);
+      return result;
+    }).catch(err => {
+      console.log(err.message)
+    })
+  }
+
+  getRandomMessage() {
+    return this.getMessageCount().then(count => {
+      console.log("count: " + count)
+      const messageIndex = Math.floor((Math.random() * count));
+      return this.getMessage(messageIndex)
+    }).then(latestMessage => {
+      this.setState({latestMessage: latestMessage})
+    })
+  }
+
+  getMessage(index) {
+    console.log(index)
+    return this.state.crowdsaleInstance.getMessage.call(index).then(result => {
+      console.log("getMessage Result: " + result);
+      return result;
+    }).catch(err => {
+      console.log(err.message)
+    })
+
+  }
+
+  updateMessageText(event) {
+    this.setState({messageText: event.target.value})
+  }
+
+  leaveAMessage(event) {
+    event.preventDefault();
+    const messageText = this.state.messageText
+
+    this.state.web3.eth.getAccounts((error, accounts) => {
+      if (error) {
+        console.log(error);
+      }
+      const account = accounts[0]
+      console.log("Message to leave: " + messageText)
+
+      this.state.crowdsaleInstance.leaveMessage(messageText, {from: account}).then(function (result) {
+        console.log(result);
+      }).catch(function(err) {
+        console.log(err.message);
+      })
+    })
+  }
 
   render() {
     return (
@@ -193,6 +294,15 @@ class App extends Component {
               <li>Click *Add*!</li>
               </ol>
             </div>
+          </Element>
+          <Element name="messages" className="element messages">
+              <h2>Leave a message for dekz</h2>
+              <form onSubmit={this.leaveAMessage}>
+                <label>
+                  <input type="text" placeholder="🏩 Noooo. Please don't go" value={this.state.messageText} onChange={this.updateMessageText} className='dekzInput' />
+                </label>
+                <button type="submit" value="Submit" className='Button'>Send Message</button>
+              </form>
           </Element>
           <p className="footer-tagline">Designed and developed with ♥ in Melbourne by the Hooroo crew.</p>
         </div>
