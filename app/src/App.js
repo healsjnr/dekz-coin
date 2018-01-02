@@ -300,7 +300,7 @@ class App extends Component {
             </div>
           </Element>
           <Element name="messages" className="element messages">
-              <h2>Leave a message for dekz</h2>
+              <h2>Leave a message for Jacob</h2>
               <form onSubmit={this.leaveAMessage}>
                 <label>
                   <input type="text" placeholder="🏩 Noooo. Please don't go" value={this.state.messageText} onChange={this.updateMessageText} className='dekzInput' />
