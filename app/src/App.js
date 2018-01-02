@@ -116,6 +116,21 @@ class App extends Component {
     })
   }
 
+  showMessages() {
+    console.log("message: " + this.state.latestMessage)
+    console.log("web3 null? " + (this.state.web3 === null))
+    return this.state.latestMessage !== "" && this.state.web3 !== null
+  }
+
+  messages() {
+    return (
+      <Element>
+        <h2>a random message...</h2>
+        <strong>{this.state.latestMessage}</strong>
+      </Element>
+    )
+  }
+
   render() {
     return (
       <div className="App">
@@ -308,6 +323,7 @@ class App extends Component {
                 <button type="submit" value="Submit" className='Button'>Send Message</button>
               </form>
           </Element>
+          { this.showMessages() ? this.messages() : null }
           <p className="footer-tagline">Designed and developed with ♥ in Melbourne by the Hooroo crew.</p>
         </div>
       </div>
