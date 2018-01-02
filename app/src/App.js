@@ -323,7 +323,8 @@ class App extends Component {
                 <button type="submit" value="Submit" className='Button'>Send Message</button>
               </form>
           </Element>
-          { this.showMessages() ? this.messages() : null }
+          <div className='RandomMessage'>{ this.showMessages() ? this.messages() : null }</div>
+
           <p className="footer-tagline">Designed and developed with ♥ in Melbourne by the Hooroo crew.</p>
         </div>
       </div>

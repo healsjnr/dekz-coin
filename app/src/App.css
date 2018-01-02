@@ -172,7 +172,11 @@
   margin: 0 auto;
   padding-top: 20px;
   color: white;
-  margin-bottom: 100px
+  margin-bottom: 50px
+}
+
+.RandomMessage {
+  margin-bottom: 50px
 }
 
 .messages input:focus::-webkit-input-placeholder {
